@@ -28,7 +28,7 @@ def download_csv():
     pandashelper.download_csv(session.file_name,session.DataFrame)
 
 def download_excel():
-    pandashelper.download_excel(session.file_name,session.DataFrame)
+    pandashelper.download_excel(session.file_name, session.DataFrame)
 
 def execute():  
     st.set_page_config(
@@ -49,7 +49,9 @@ def execute():
             st.write(session.DataFrame)
             # from st_aggrid import AgGrid
             # AgGrid(session.DataFrame)
-            st.button("Download CSV", key="download_csv", on_click=download_csv)
+            st.download_button('Download CSV', file_name=session.file_name.replace('ifc', '.csv'), data=session.DataFrame.to_csv())
+            st.download_button('Download JSON', file_name=session.file_name.replace('ifc', '.json'), data=session.DataFrame.to_json())
+            # st.button("Download CSV", key="download_csv", on_click=download_csv)
             st.button("Download Excel", key="download_excel", on_click=download_excel)
         with tab2:
             row2col1, row2col2 = st.columns(2)
