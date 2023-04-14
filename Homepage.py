@@ -33,10 +33,10 @@ def change_project_name():
 def main():
     st.set_page_config(
         layout="wide",
-        page_title="IFC Stream",
-        page_icon="✍️",
+        page_title="IFC BIM Model AQA",
+        page_icon="🏗️",
     )
-    st.title("Streamlit IFC")
+    st.title("IFC BIM Model AQA")
     st.markdown(
         """ 
     ###  📁 Загрузите файл в формате ifc
@@ -44,7 +44,7 @@ def main():
     )
 
     ## Add File uploader to Side Bar Navigation
-    st.header('Model Loader')
+    # st.header('Model Loader')
     st.file_uploader("Выберите файл", type=['ifc'], key="uploaded_file", on_change=callback_upload)
 
     ## Add File Name and Success Message
@@ -54,7 +54,7 @@ def main():
         col1, col2 = st.columns([2, 1])
         col1.subheader(f'Файл проекта успешно загружен "{get_project_name()}"')
         col2.text_input("✏️ Изменить название проекта", key="project_name_input")
-        col2.button("✔️ Apply", key="change_project_name", on_click=change_project_name())
+        col2.button("✔️ Применить", key="change_project_name", on_click=change_project_name())
 
         st.write("🔃 Вы так же можете загрузить новый файл")
 

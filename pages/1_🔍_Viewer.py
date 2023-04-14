@@ -205,5 +205,19 @@ def execute():
             write_health_data()
     else:
         st.header("Step 1: Load a file from the Home Page")
+
+    st.sidebar.write("""
+    ### Credits:
+    #### Artem Leonov
+
+    Follow me on [GitHub](https://github.com/tmlnv)
+
+    --------------
+    License: MIT
+
+    """)
+    st.write("")
+    st.sidebar.write("")
+
 session = st.session_state
 execute()

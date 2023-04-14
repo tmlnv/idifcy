@@ -176,5 +176,18 @@ def execute():
     else:
         st.header("Загрузите файл на домашней странице")
 
+    st.sidebar.write("""
+    ### Credits:
+    #### Artem Leonov
+
+    Follow me on [GitHub](https://github.com/tmlnv)
+
+    --------------
+    License: MIT
+
+    """)
+    st.write("")
+    st.sidebar.write("")
+
 
 execute()
