@@ -56,7 +56,7 @@ def selectbox():
 
 
 def show_progress():
-    st.write('Starting a long computation...')
+    st.write('Starting...')
 
     # Add a placeholder
     latest_iteration = st.empty()
@@ -66,28 +66,50 @@ def show_progress():
         # Update the progress bar with each iteration.
         latest_iteration.text(f'Iteration {i + 1}')
         bar.progress(i + 1)
-        sleep(0.1)
+        sleep(0.01)
 
     st.write('...and now we\'re done!')
 
-def load_data():
-    if "ifc_file" in session:
-        st.write(dir(session.ifc_file))
-
 
 def initialize_session_state():
-    session["isHealthDataLoaded"] = False
-    session["HealthData"] = {}
-    session["Graphs"] = {}
-    session["SequenceData"] = {}
-    session["CostScheduleData"] = {}
+    # session["isHealthDataLoaded"] = False
+    # session["HealthData"] = {}
+    # session["Graphs"] = {}
+    # session["SequenceData"] = {}
+    # session["CostScheduleData"] = {}
+    session["DataFrame"] = None
+    session["Classes"] = []
+    session["IsDataFrameLoaded"] = False
+
+
+def load_data():
+    if "ifc_file" in session:
+
+        # st.write(dir(session.ifc_file))
+
+        session["DataFrame"] = get_ifc_pandas()
+        session.Classes = session.DataFrame["Class"].value_counts().keys().tolist()
+        session["IsDataFrameLoaded"] = True
+
+
+def get_ifc_pandas():
+    data, pset_attributes = ifchelper.get_objects_data_by_class(
+        session.ifc_file,
+        "IfcBuildingElement"
+    )
+    frame = ifchelper.create_pandas_dataframe(data, pset_attributes)
+    return frame
 
 
 def run_tests():
+
+    show_progress()
     st.write(dir(session.DataFrame))
     st.write(session.DataFrame.get('Type'))
     obj_types = session.DataFrame.get('Type')
     st.write(type(obj_types))
+
+
     counter = 0
     for elem in session.DataFrame.get('Type'):
         try:
@@ -115,27 +137,33 @@ def execute():
         initial_sidebar_state="expanded",
     )
     st.header("Тестирование файла")
-    if not "IsDataFrameLoaded" in session:
+
+    if "IsDataFrameLoaded" not in session:
         initialize_session_state()
+
     if not session.IsDataFrameLoaded:
         load_data()
+
     if session.IsDataFrameLoaded:
-        tab1, tab2 = st.tabs(["Dataframe Utilities", "Quantities Review"])
+        tab1, tab2 = st.tabs(["Test", " Some second stuff"])
         with tab1:
             ## DATAFRAME REVIEW
-            st.header("DataFrame Review")
-            st.write(draw_chart())
-            st.write(plot_map())
-            st.write(x := write_widget(), 'squad is', x * x)
-            input_name()
-            checkbox()
-            selectbox()
-            show_progress()
+            st.header("Test")
+            # st.write(draw_chart())
+            # st.write(plot_map())
+            # st.write(x := write_widget(), 'squad is', x * x)
+            # input_name()
+            # checkbox()
+            # selectbox()
+            # show_progress()
             st.write(session.DataFrame)
             # from st_aggrid import AgGrid
             # AgGrid(session.DataFrame)
 
-            st.button('Run tests', key="run_tests", on_click=run_tests())
+            if st.button('Run tests', key="run_tests", help='Провести тест'):
+                run_tests()
+
+            # st.button('Run tests', key="run_tests", help='Провести тест', on_click=run_tests)
 
             st.download_button('Download CSV', file_name=session.file_name.replace('ifc', '.csv'),
                                data=session.DataFrame.to_csv())
