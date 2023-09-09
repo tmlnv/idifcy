@@ -191,20 +191,21 @@ def execute():
         layout="wide",
         initial_sidebar_state="expanded",
     )
-    st.header("🔍 IFC.js Viewer")
+    # st.header("🔍 IFC.js Viewer")
+    st.header("Просмотр модели")
     initialise_debug_props()
     # st.header("🔍 IFC.js Viewer")
     if "ifc_file" in session and session["ifc_file"]:
         if "ifc_js_response" not in session:
             session["ifc_js_response"] = ""
         draw_3d_viewer()
-        tab1, tab2 = st.tabs(["🧮 Properties", "🩺 Debugger"])
+        tab1, tab2 = st.tabs(["Модель и параметры", "Debugger"])
         with tab1:
             write_pset_data()
         with tab2:
             write_health_data()
     else:
-        st.header("Step 1: Load a file from the Home Page")
+        st.header("Загрузите файл на домашней странице")
 
     st.sidebar.write("""
     ### Credits:

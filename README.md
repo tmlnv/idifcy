@@ -17,4 +17,7 @@ npm i
 
 
 ## Run
-`streamlit run Homepage.py`
+
+```bash
+streamlit run Homepage.py
+```
