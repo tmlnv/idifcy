@@ -1,4 +1,7 @@
 import streamlit as st
+
+from pages.components.constants import MSG_UPLOAD_FILE_REQ
+from pages.components.custom_sidebar import custom_sidebar
 from tools import ifchelper
 from tools import pandashelper
 from tools import graph_maker
@@ -83,6 +86,9 @@ def execute():
                         )
                         st.plotly_chart(graph)
     else: 
-        st.header("Step 1: Load a file from the Home Page")
-    
+        st.header(MSG_UPLOAD_FILE_REQ)
+
+    custom_sidebar()
+
+
 execute()

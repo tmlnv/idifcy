@@ -1,8 +1,13 @@
+from time import sleep
+
 import streamlit as st
-from tools import ifchelper
 import numpy as np
 import pandas as pd
-from time import sleep
+from ifctester import ids, reporter
+
+from pages.components.constants import MSG_UPLOAD_FILE_REQ
+from pages.components.custom_sidebar import custom_sidebar
+from tools import ifchelper
 
 session = st.session_state
 
@@ -129,6 +134,25 @@ def test_type_of_element(element):
     assert element in allowed_types
 
 
+def run_ids_test():
+
+
+    ids_file = st.file_uploader("Выберите файл IDS", type=['ids'], key="uploaded_file")
+    if ids_file:
+        my_ids = ids.open(ids_file)
+
+        for spec in my_ids.specifications:
+           st.write(spec.asdict())
+        st.write(dir(my_ids))
+
+        show_progress()
+
+        my_ids.validate(session["ifc_file"])
+        st.write(session["ifc_file"])
+
+        st.write(reporter.Json(my_ids).report())
+
+
 def execute():
     st.set_page_config(
         page_title="Test",
@@ -159,6 +183,7 @@ def execute():
             st.write(session.DataFrame)
             # from st_aggrid import AgGrid
             # AgGrid(session.DataFrame)
+            run_ids_test()
 
             if st.button('Run tests', key="run_tests", help='Провести тест'):
                 run_tests()
@@ -174,20 +199,9 @@ def execute():
 
             # st.write(len(session.ifc_file.by_type('IfcWall')))
     else:
-        st.header("Загрузите файл на домашней странице")
+        st.header(MSG_UPLOAD_FILE_REQ)
 
-    st.sidebar.write("""
-    ### Credits:
-    #### Artem Leonov
-
-    Follow me on [GitHub](https://github.com/tmlnv)
-
-    --------------
-    License: MIT
-
-    """)
-    st.write("")
-    st.sidebar.write("")
+    custom_sidebar()
 
 
 execute()

@@ -1,8 +1,9 @@
-from email.policy import default
 import streamlit as st
+
+from pages.components.constants import MSG_UPLOAD_FILE_REQ
+from pages.components.custom_sidebar import custom_sidebar
 from tools import ifchelper
 from tools import graph_maker
-from datetime import datetime
 
 import ifcopenshell
 
@@ -265,7 +266,9 @@ def execute():
             draw_schedules()
         draw_side_bar()
     else:
-        st.header("Загрузите файл на странице Home Page")
+        st.header(MSG_UPLOAD_FILE_REQ)
+
+    custom_sidebar()
 
 
 session = st.session_state

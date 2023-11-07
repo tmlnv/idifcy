@@ -1,6 +1,8 @@
 import ifcopenshell
 import streamlit as st
 
+from pages.components.custom_sidebar import custom_sidebar
+
 
 def callback_upload():
     session["file_name"] = session["uploaded_file"].name
@@ -58,18 +60,7 @@ def main():
 
         st.write("🔃 Вы так же можете загрузить новый файл")
 
-    st.sidebar.write("""
-    ### Credits:
-    #### Artem Leonov
-    
-    Follow me on [GitHub](https://github.com/tmlnv)
-    
-    --------------
-    License: MIT
-    
-    """)
-    st.write("")
-    st.sidebar.write("")
+    custom_sidebar()
 
 
 if __name__ == "__main__":
