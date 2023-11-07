@@ -6,3 +6,4 @@ pandas~=1.5.3
 xlsxwriter
 ifctester~=0.0.231005
 numpy~=1.24.2
+openpyxl

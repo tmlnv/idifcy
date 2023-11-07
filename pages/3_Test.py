@@ -1,3 +1,4 @@
+import json
 from time import sleep
 
 import streamlit as st
@@ -151,7 +152,7 @@ def execute():
         load_data()
 
     if session.IsDataFrameLoaded:
-        tab1, tab2 = st.tabs(["Test", "IDS specification"])
+        tab1, tab2, tab3 = st.tabs(["Test", "IDS Specification", "IDS Results"])
         with tab1:
             st.header("Test")
 
@@ -177,6 +178,19 @@ def execute():
                 print_ids_as_dict()
             else:
                 st.write("Загрузите IDS файл на вкладке 'Test' для просмотра спецификации")
+
+        with tab3:
+            st.header("IDS Results")
+            if ids_report := session.get("IdsReport"):
+                st.header("Результаты проверки")
+                st.download_button(
+                    'Download JSON',
+                    file_name='IDS_RES_' + session.file_name.replace('ifc', '.json'),
+                    data=json.dumps(ids_report)
+                )
+                st.write(ids_report)
+            else:
+                st.write("Загрузите IDS файл на вкладке 'Test' и произведите проверку, нажав на кнопку 'Run IDS tests'")
 
     else:
         st.header(MSG_UPLOAD_FILE_REQ)
