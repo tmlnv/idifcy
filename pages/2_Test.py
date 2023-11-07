@@ -7,6 +7,7 @@ from ifctester import ids, reporter
 
 from pages.components.constants import MSG_UPLOAD_FILE_REQ
 from pages.components.custom_sidebar import custom_sidebar
+from pages.components.ids_check_res_df import create_specifications_dataframe
 from tools import ifchelper
 
 session = st.session_state
@@ -89,7 +90,6 @@ def initialize_session_state():
 
 def load_data():
     if "ifc_file" in session:
-
         # st.write(dir(session.ifc_file))
 
         session["DataFrame"] = get_ifc_pandas()
@@ -107,13 +107,11 @@ def get_ifc_pandas():
 
 
 def run_tests():
-
     show_progress()
     st.write(dir(session.DataFrame))
     st.write(session.DataFrame.get('Type'))
     obj_types = session.DataFrame.get('Type')
     st.write(type(obj_types))
-
 
     counter = 0
     for elem in session.DataFrame.get('Type'):
@@ -135,14 +133,14 @@ def test_type_of_element(element):
 
 
 def run_ids_test():
-
-
     ids_file = st.file_uploader("Выберите файл IDS", type=['ids'], key="uploaded_file")
     if ids_file:
         my_ids = ids.open(ids_file)
 
         for spec in my_ids.specifications:
-           st.write(spec.asdict())
+            st.write(spec.asdict())
+
+        st.write(my_ids.info)
         st.write(dir(my_ids))
 
         show_progress()
@@ -150,8 +148,11 @@ def run_ids_test():
         my_ids.validate(session["ifc_file"])
         st.write(session["ifc_file"])
 
-        st.write(reporter.Json(my_ids).report())
+        report = reporter.Json(my_ids).report()
+        st.write(report)
 
+        res_df = create_specifications_dataframe(report)
+        st.write(res_df)
 
 def execute():
     st.set_page_config(

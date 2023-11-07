@@ -41,8 +41,8 @@ def main():
     st.title("IFC BIM Model AQA")
     st.markdown(
         """ 
-    ###  📁 Загрузите файл в формате ifc
-    """
+        ###  📁 Загрузите файл в формате ifc
+        """
     )
 
     ## Add File uploader to Side Bar Navigation
