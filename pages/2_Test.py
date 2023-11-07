@@ -8,7 +8,7 @@ from ifctester import ids, reporter
 from pages.components.constants import MSG_UPLOAD_FILE_REQ
 from pages.components.custom_sidebar import custom_sidebar
 from pages.components.ids_check_res_df import create_specifications_dataframe
-from tools import ifchelper
+from pages.components.load_data import load_data
 
 session = st.session_state
 
@@ -78,32 +78,12 @@ def show_progress():
 
 
 def initialize_session_state():
-    # session["isHealthDataLoaded"] = False
-    # session["HealthData"] = {}
-    # session["Graphs"] = {}
-    # session["SequenceData"] = {}
-    # session["CostScheduleData"] = {}
     session["DataFrame"] = None
     session["Classes"] = []
     session["IsDataFrameLoaded"] = False
-
-
-def load_data():
-    if "ifc_file" in session:
-        # st.write(dir(session.ifc_file))
-
-        session["DataFrame"] = get_ifc_pandas()
-        session.Classes = session.DataFrame["Class"].value_counts().keys().tolist()
-        session["IsDataFrameLoaded"] = True
-
-
-def get_ifc_pandas():
-    data, pset_attributes = ifchelper.get_objects_data_by_class(
-        session.ifc_file,
-        "IfcBuildingElement"
-    )
-    frame = ifchelper.create_pandas_dataframe(data, pset_attributes)
-    return frame
+    session["IdsFile"] = None
+    session["IdsReport"] = None
+    session["IdsReportDF"] = None
 
 
 def run_tests():
@@ -119,9 +99,6 @@ def run_tests():
             test_type_of_element(elem)
         except AssertionError as e:
             counter += 1
-            # st.write(f"Check failed, problem is {dir(e)}")
-            # st.write(f"Check failed, problem is {e}")
-            # continue
     st.write(f'Total elements failed checking {counter}')
 
 
@@ -132,27 +109,31 @@ def test_type_of_element(element):
     assert element in allowed_types
 
 
-def run_ids_test():
+def upload_ids_file():
     ids_file = st.file_uploader("Выберите файл IDS", type=['ids'], key="uploaded_file")
     if ids_file:
         my_ids = ids.open(ids_file)
+        session["IdsFile"] = my_ids
 
-        for spec in my_ids.specifications:
-            st.write(spec.asdict())
 
-        st.write(my_ids.info)
-        st.write(dir(my_ids))
+def print_ids_as_dict():
+    for spec in session["IdsFile"].specifications:
+        st.write(spec.asdict())
 
-        show_progress()
 
-        my_ids.validate(session["ifc_file"])
-        st.write(session["ifc_file"])
+def run_ids_test():
+    ids_info = session["IdsFile"].info
+    st.write(f'Название ids спецификации: **{(ids_info)["title"]}**, автор: {ids_info["author"]}')
 
-        report = reporter.Json(my_ids).report()
-        st.write(report)
+    show_progress()
 
-        res_df = create_specifications_dataframe(report)
-        st.write(res_df)
+    session["IdsFile"].validate(session["ifc_file"])
+
+    report = reporter.Json(session["IdsFile"]).report()
+    session["IdsReport"] = report
+
+    session["IdsReportDF"] = create_specifications_dataframe(report)
+
 
 def execute():
     st.set_page_config(
@@ -170,35 +151,33 @@ def execute():
         load_data()
 
     if session.IsDataFrameLoaded:
-        tab1, tab2 = st.tabs(["Test", " Some second stuff"])
+        tab1, tab2 = st.tabs(["Test", "IDS specification"])
         with tab1:
-            ## DATAFRAME REVIEW
             st.header("Test")
-            # st.write(draw_chart())
-            # st.write(plot_map())
-            # st.write(x := write_widget(), 'squad is', x * x)
-            # input_name()
-            # checkbox()
-            # selectbox()
-            # show_progress()
-            st.write(session.DataFrame)
-            # from st_aggrid import AgGrid
-            # AgGrid(session.DataFrame)
-            run_ids_test()
+
+            upload_ids_file()
+            if session["IdsFile"]:
+                if st.button(
+                        'Run IDS tests',
+                        key="run_ids_test",
+                        help='Провести тест в соответствии с IDS спецификацией'
+                ):
+                    run_ids_test()
+                if session.get("IdsReportDF"):
+                    st.header("Результаты проверки")
+                    st.write(session["IdsReportDF"])
+
 
             if st.button('Run tests', key="run_tests", help='Провести тест'):
                 run_tests()
 
-            # st.button('Run tests', key="run_tests", help='Провести тест', on_click=run_tests)
+        with tab2:
+            st.header("IDS Specification")
+            if session["IdsFile"]:
+                print_ids_as_dict()
+            else:
+                st.write("Загрузите IDS файл на вкладке 'Test' для просмотра спецификации")
 
-            st.download_button('Download CSV', file_name=session.file_name.replace('ifc', '.csv'),
-                               data=session.DataFrame.to_csv())
-            st.download_button('Download JSON', file_name=session.file_name.replace('ifc', '.json'),
-                               data=session.DataFrame.to_json())
-            # st.button("Download CSV", key="download_csv", on_click=download_csv)
-            # st.button("Download Excel", key="download_excel", on_click=download_excel)
-
-            # st.write(len(session.ifc_file.by_type('IfcWall')))
     else:
         st.header(MSG_UPLOAD_FILE_REQ)
 

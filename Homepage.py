@@ -22,6 +22,11 @@ def callback_upload():
     session["Classes"] = []
     session["IsDataFrameLoaded"] = False
 
+    ### Empty IDS
+    session["IdsFile"] = None
+    session["IdsReport"] = None
+    session["IdsReportDF"] = None
+
 
 def get_project_name():
     return session.ifc_file.by_type("IfcProject")[0].Name

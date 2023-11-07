@@ -2,36 +2,26 @@ import streamlit as st
 
 from pages.components.constants import MSG_UPLOAD_FILE_REQ
 from pages.components.custom_sidebar import custom_sidebar
-from tools import ifchelper
+from pages.components.load_data import load_data
 from tools import pandashelper
 from tools import graph_maker
 
 session = st.session_state
+
 
 def initialize_session_state():
     session["DataFrame"] = None
     session["Classes"] = []
     session["IsDataFrameLoaded"] = False
 
-def load_data():
-    if "ifc_file" in session:
-        session["DataFrame"] = get_ifc_pandas()
-        session.Classes = session.DataFrame["Class"].value_counts().keys().tolist()
-        session["IsDataFrameLoaded"] = True
-
-def get_ifc_pandas():
-    data, pset_attributes = ifchelper.get_objects_data_by_class(
-        session.ifc_file, 
-        "IfcBuildingElement"
-    )
-    frame = ifchelper.create_pandas_dataframe(data, pset_attributes)
-    return frame
 
 def download_csv():
-    pandashelper.download_csv(session.file_name,session.DataFrame)
+    pandashelper.download_csv(session.file_name, session.DataFrame)
+
 
 def download_excel():
-    pandashelper.download_excel(session.file_name, session.DataFrame)
+    return pandashelper.download_excel(session.file_name, session.DataFrame)
+
 
 def execute():  
     st.set_page_config(
