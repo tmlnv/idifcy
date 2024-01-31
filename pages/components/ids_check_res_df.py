@@ -34,7 +34,7 @@ def create_specifications_dataframe(data: dict):
     df = pd.DataFrame(rows)
 
     # Calculate percentages and add as a new column
-    df['Passed Percentage'] = (df['Passed Checks'] / df['Total Checks']) * 100
+    df['Passed Percentage'] = ((df['Passed Checks'] / df['Total Checks']) * 100).round().astype(int)
 
     # Add summary row
     summary_row = {
@@ -42,13 +42,11 @@ def create_specifications_dataframe(data: dict):
         'Requirement': 'N/A',
         'Total Checks': total_checks,
         'Passed Checks': passed_checks,
-        'Failed Checks': failed_checks
+        'Failed Checks': failed_checks,
+        'Passed Percentage': round((passed_checks / total_checks * 100)) if total_checks > 0 else 0
     }
 
     df = df.append(summary_row, ignore_index=True)
-
-    # Calculate percentages and add as a new column
-    df['Passed Percentage'] = (df['Passed Checks'] / df['Total Checks']) * 100
 
     # Define a function to apply colors
     def color_pass_fail(val):
