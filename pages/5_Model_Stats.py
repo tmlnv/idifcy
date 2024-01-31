@@ -100,24 +100,6 @@ def draw_schedules():
             st.warning("No Cost Items 😥")
 
 
-def draw_side_bar():
-    def save_file():
-        session.ifc_file.write(session.file_name)
-
-    ## Cost Scheduler
-    st.sidebar.header("💰 Cost Scheduler")
-    st.sidebar.text_input("✏️ Schedule Name", key="cost_input")
-    st.sidebar.button("➕ Add Schedule", key="add_schedule_button", on_click=add_cost_schedule)
-
-    ## Work Scheduler
-    st.sidebar.header("📅 Cost Scheduler")
-    st.sidebar.text_input("✏️ Schedule Name", key="schedule_input")
-    st.sidebar.button("➕ Add Schedule", key="add_work_schedule_button", on_click=add_work_schedule)
-
-    ## File Saver
-    st.sidebar.button("💾 Save File", key="save_file", on_click=save_file)
-
-
 def initialise_debug_props(force=False):
     if not "BIMDebugProperties" in session:
         session.BIMDebugProperties = {
@@ -206,7 +188,7 @@ def edit_object_data(object_id, attribute):
 
 def execute():
     initialise_debug_props()
-    st.header(" 🩺 Model Health")
+    st.header("Статистика модели")
 
     if "isHealthDataLoaded" not in session:
         initialize_session_state()
@@ -215,10 +197,13 @@ def execute():
         load_data()
 
     if session.isHealthDataLoaded:
-        tab1, tab2, tab3 = st.tabs(["📊 Debug", "📈 Charts", "📝 Schedules"])
+        tab1, tab2 = st.tabs(["📈 Charts", "📊 Debug"])
+
+        with tab1:
+            draw_graphs()
 
         ## REPLICATE IFC DEBUG PANNEL
-        with tab1:
+        with tab2:
             row1_col1, row1_col2 = st.columns([1, 5])
             with row1_col1:
                 st.text_input("Object ID", key="object_id")
@@ -240,7 +225,7 @@ def execute():
                         else:
                             col2.text_input(label=prop["name"], key=prop["name"], value=prop["string_value"])
 
-                ## INVERSE ATTRIBUTES           
+                ## INVERSE ATTRIBUTES
                 if props["inverse_attributes"]:
                     st.subheader("Inverse Attributes")
                     for inverse in props["inverse_attributes"]:
@@ -251,7 +236,7 @@ def execute():
                             col3.button("Get Object", key=f'get_object_pop_button_{inverse["int_value"]}',
                                         on_click=get_object_data, args=(inverse["int_value"],))
 
-                ## INVERSE REFERENCES    
+                ## INVERSE REFERENCES
                 if props["inverse_references"]:
                     st.subheader("Inverse References")
                     for inverse in props["inverse_references"]:
@@ -260,11 +245,7 @@ def execute():
                         if inverse["int_value"]:
                             col3.button("Get Object", key=f'get_object_pop_button_inverse_{inverse["int_value"]}',
                                         on_click=get_object_data, args=(inverse["int_value"],))
-        with tab2:
-            draw_graphs()
-        with tab3:
-            draw_schedules()
-        draw_side_bar()
+
     else:
         st.header(MSG_UPLOAD_FILE_REQ)
 
