@@ -82,7 +82,8 @@ def initialize_session_state():
     session["DataFrame"] = None
     session["Classes"] = []
     session["IsDataFrameLoaded"] = False
-    session["IdsFile"] = None
+    if "IdsFile" not in session:
+        session["IdsFile"] = None
     session["IdsReport"] = None
     session["IdsReportDF"] = None
 
@@ -163,6 +164,7 @@ def execute():
             st.header("Test")
 
             upload_ids_file()
+
             if session["IdsFile"]:
                 if st.button(
                         'Run IDS tests',

@@ -70,6 +70,9 @@ st.set_page_config(
 if 'ids' not in st.session_state:
     st.session_state.ids = None
 
+if 'IdsFile' not in st.session_state:
+    st.session_state["IdsFile"] = None
+
 if 'df_specifications' not in st.session_state:
     st.session_state.df = None
 if 'df_applicability' not in st.session_state:
@@ -322,6 +325,7 @@ with st.container():
                     my_ids.specifications.append(my_spec)
 
                 st.session_state.ids = my_ids.to_string()
+                st.session_state["IdsFile"] = my_ids
 
                 if st.session_state.ids is not None:
                     st.session_state.convert = True
