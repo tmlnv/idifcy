@@ -124,7 +124,13 @@ def print_ids_as_dict():
 
 def run_ids_test():
     ids_info = session["IdsFile"].info
-    st.write(f'Название ids спецификации: **{(ids_info)["title"]}**, автор: {ids_info["author"]}')
+
+    try:
+        ids_author = ids_info["author"]
+    except KeyError:
+        ids_author = "Неизвестный автор"
+
+    st.write(f'Название ids спецификации: **{ids_info["title"]}**, автор: {ids_author}')
 
     show_progress()
 
