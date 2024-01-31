@@ -4,6 +4,8 @@ import datetime
 from ifctester import ids
 from PIL import Image
 
+from pages.components.custom_sidebar import custom_sidebar
+
 
 # =========================================================================================================================
 # pattern
@@ -87,11 +89,14 @@ if 'convert' not in st.session_state:
     st.session_state.convert = False
 
 # =========================================================================================================================
-# Sidebar
+# Header and sidebar
 # =========================================================================================================================
 
-with st.sidebar:
-    uploaded_file = st.file_uploader("📥 Choose a XLSX file", type=['xlsx'])
+st.header("Конвертация Excel файла в IDS формат")
+
+uploaded_file = st.file_uploader("Выберите XLSX файл", type=['xlsx'])
+
+custom_sidebar()
 
 # =========================================================================================================================
 # If file loaded or bSDD connection
