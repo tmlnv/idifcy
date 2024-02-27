@@ -1,4 +1,6 @@
 import streamlit as st
+
+from pages.components.custom_sidebar import custom_sidebar
 from tools import ifchelper
 import json
 import ifcopenshell
@@ -207,18 +209,7 @@ def execute():
     else:
         st.header("Загрузите файл на домашней странице")
 
-    st.sidebar.write("""
-    ### Credits:
-    #### Artem Leonov
-
-    Follow me on [GitHub](https://github.com/tmlnv)
-
-    --------------
-    License: MIT
-
-    """)
-    st.write("")
-    st.sidebar.write("")
+    custom_sidebar()
 
 session = st.session_state
 execute()

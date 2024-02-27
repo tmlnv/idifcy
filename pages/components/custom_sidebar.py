@@ -7,7 +7,7 @@ def custom_sidebar():
     ### Credits:
     #### Artem Leonov
 
-    Follow me on [GitHub](https://github.com/tmlnv)
+    [GitHub](https://github.com/tmlnv)
 
     --------------
     License: MIT
