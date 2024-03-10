@@ -33,7 +33,7 @@ def create_specifications_dataframe(data: dict):
     # Create DataFrame
     df = pd.DataFrame(rows)
 
-    def _calc_passed_persentage(row_):
+    def _calc_passed_percentage(row_) -> int | None:
         # Calculate percentages and add as a new column
         if row_['Total Checks'] <= 0:
             return None
@@ -44,15 +44,7 @@ def create_specifications_dataframe(data: dict):
             except Exception:
                 return row_['Passed Checks'] / row_['Total Checks'] * 100
 
-    # Calculate percentages and add as a new column
-    # try:
-    #     df['Passed Percentage'] = ((df['Passed Checks'] / df['Total Checks']) * 100).round().astype(int)
-    #
-    # except Exception:
-    #     df['Passed Percentage'] = (df['Passed Checks'] / df['Total Checks']) * 100
-    # Calculate percentages and add as a new column
-    df['Passed Percentage'] = df.apply(
-        _calc_passed_persentage, axis=1)
+    df['Passed Percentage'] = df.apply(_calc_passed_percentage, axis=1)
 
     # Add summary row
     summary_row = {
