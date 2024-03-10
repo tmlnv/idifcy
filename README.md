@@ -21,3 +21,15 @@ npm i
 ```bash
 streamlit run Homepage.py
 ```
+
+
+## Docker
+
+```commandline
+# Build Docker image
+docker build -t ifc-testing-streamlit .
+
+# Run Docker container
+docker run -p 8501:8501 ifc-testing-streamlit
+
+```
