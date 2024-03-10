@@ -1,34 +1,27 @@
 import streamlit as st
-from tools import ifchelper
+
+from pages.components.constants import MSG_UPLOAD_FILE_REQ
+from pages.components.custom_sidebar import custom_sidebar
+from pages.components.load_data import load_data
 from tools import pandashelper
 from tools import graph_maker
 
 session = st.session_state
+
 
 def initialize_session_state():
     session["DataFrame"] = None
     session["Classes"] = []
     session["IsDataFrameLoaded"] = False
 
-def load_data():
-    if "ifc_file" in session:
-        session["DataFrame"] = get_ifc_pandas()
-        session.Classes = session.DataFrame["Class"].value_counts().keys().tolist()
-        session["IsDataFrameLoaded"] = True
-
-def get_ifc_pandas():
-    data, pset_attributes = ifchelper.get_objects_data_by_class(
-        session.ifc_file, 
-        "IfcBuildingElement"
-    )
-    frame = ifchelper.create_pandas_dataframe(data, pset_attributes)
-    return frame
 
 def download_csv():
-    pandashelper.download_csv(session.file_name,session.DataFrame)
+    pandashelper.download_csv(session.file_name, session.DataFrame)
 
-def download_excel():
-    pandashelper.download_excel(session.file_name, session.DataFrame)
+
+# def download_excel():
+#     return pandashelper.download_excel(session.file_name, session.DataFrame)
+
 
 def execute():  
     st.set_page_config(
@@ -36,7 +29,7 @@ def execute():
         layout="wide",
         initial_sidebar_state="expanded",
     )
-    st.header(" 🧮 Model Quantities")
+    st.header("Данные модели")
     if not "IsDataFrameLoaded" in session:
         initialize_session_state()
     if not session.IsDataFrameLoaded:
@@ -52,7 +45,7 @@ def execute():
             st.download_button('Download CSV', file_name=session.file_name.replace('ifc', '.csv'), data=session.DataFrame.to_csv())
             st.download_button('Download JSON', file_name=session.file_name.replace('ifc', '.json'), data=session.DataFrame.to_json())
             # st.button("Download CSV", key="download_csv", on_click=download_csv)
-            st.button("Download Excel", key="download_excel", on_click=download_excel)
+            # st.button("Download Excel", key="download_excel", on_click=download_excel)
         with tab2:
             row2col1, row2col2 = st.columns(2)
             with row2col1:
@@ -83,6 +76,9 @@ def execute():
                         )
                         st.plotly_chart(graph)
     else: 
-        st.header("Step 1: Load a file from the Home Page")
-    
+        st.header(MSG_UPLOAD_FILE_REQ)
+
+    custom_sidebar()
+
+
 execute()

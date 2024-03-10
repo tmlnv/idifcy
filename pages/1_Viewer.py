@@ -1,4 +1,6 @@
 import streamlit as st
+
+from pages.components.custom_sidebar import custom_sidebar
 from tools import ifchelper
 import json
 import ifcopenshell
@@ -139,9 +141,9 @@ def write_pset_data():
 def write_health_data():
     st.subheader("🩺 Debugger")
     ## REPLICATE IFC DEBUG PANNEL
-    row1_col1, row1_col2 = st.columns([1,5])
+    row1_col1, row1_col2 = st.columns([1, 1])
     with row1_col1:
-        st.number_input("Object ID", key="object_id")
+        st.number_input("Object ID", value=0, placeholder="Введите id элемента...", key="object_id")
     with row1_col2:
         st.button("Inspect From Id", key="edit_object_button", on_click=get_object_data, args=(st.session_state.object_id,))
         data = get_psets_from_ifc_js()
@@ -207,18 +209,7 @@ def execute():
     else:
         st.header("Загрузите файл на домашней странице")
 
-    st.sidebar.write("""
-    ### Credits:
-    #### Artem Leonov
-
-    Follow me on [GitHub](https://github.com/tmlnv)
-
-    --------------
-    License: MIT
-
-    """)
-    st.write("")
-    st.sidebar.write("")
+    custom_sidebar()
 
 session = st.session_state
 execute()

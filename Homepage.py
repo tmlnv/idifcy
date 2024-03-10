@@ -1,6 +1,8 @@
 import ifcopenshell
 import streamlit as st
 
+from pages.components.custom_sidebar import custom_sidebar
+
 
 def callback_upload():
     session["file_name"] = session["uploaded_file"].name
@@ -19,6 +21,11 @@ def callback_upload():
     session["DataFrame"] = None
     session["Classes"] = []
     session["IsDataFrameLoaded"] = False
+
+    ### Empty IDS
+    session["IdsFile"] = None
+    session["IdsReport"] = None
+    session["IdsReportDF"] = None
 
 
 def get_project_name():
@@ -39,8 +46,8 @@ def main():
     st.title("IFC BIM Model AQA")
     st.markdown(
         """ 
-    ###  📁 Загрузите файл в формате ifc
-    """
+        ###  📁 Загрузите файл в формате ifc
+        """
     )
 
     ## Add File uploader to Side Bar Navigation
@@ -58,18 +65,7 @@ def main():
 
         st.write("🔃 Вы так же можете загрузить новый файл")
 
-    st.sidebar.write("""
-    ### Credits:
-    #### Artem Leonov
-    
-    Follow me on [GitHub](https://github.com/tmlnv)
-    
-    --------------
-    License: MIT
-    
-    """)
-    st.write("")
-    st.sidebar.write("")
+    custom_sidebar()
 
 
 if __name__ == "__main__":
