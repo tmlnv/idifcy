@@ -29,9 +29,9 @@ streamlit run Homepage.py
 
 ```commandline
 # Build Docker image
-docker build -t ifc-testing-streamlit .
+docker build -t idifcy .
 
 # Run Docker container
-docker run -p 8501:8501 ifc-testing-streamlit
+docker run -p 8501:8501 idifcy
 
 ```

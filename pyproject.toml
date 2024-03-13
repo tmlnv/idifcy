@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "idifcy"
+version = "0.1.0"
+description = "IFC quality assurance using IDS."
+authors = ["tmlnv <tmlnv@protonmail.com>"]
+license = "GPL-3.0-only"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+streamlit = ">=1.28.0,<1.29.0"
+ifcopenshell = "0.7.0.230329"
+ifctester = ">=0.0.231005,<0.1.0"
+matplotlib = ">=3.7.1,<3.8.0"
+plotly = "5.13.1"
+pandas = ">=1.5.3,<1.6.0"
+xlsxwriter = "3.0.9"
+xmlschema = "2.5.0"
+numpy = ">=1.24.2,<1.25.0"
+openpyxl = "3.1.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
