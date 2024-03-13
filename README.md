@@ -1,4 +1,6 @@
-# ifc
+# idifcy
+
+Intelligent Design Implementation for Facilitating Construction Yields
 
 ## Setup
 
