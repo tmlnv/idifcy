@@ -33,12 +33,19 @@ def create_specifications_dataframe(data: dict):
     # Create DataFrame
     df = pd.DataFrame(rows)
 
-    # Calculate percentages and add as a new column
-    try:
-        df['Passed Percentage'] = ((df['Passed Checks'] / df['Total Checks']) * 100).round().astype(int)
+    def _calc_passed_percentage(row_) -> str | None:
+        """Calculate the total passed checks percentage of a specification"""
+        # Check for zero total checks to avoid division by zero
+        if row_['Total Checks'] == 0:
+            return None
+        else:
+            # Calculate the percentage
+            percentage = (row_['Passed Checks'] / row_['Total Checks']) * 100
+            # Return the percentage with three decimal places
+            return f"{percentage:.3f}"
 
-    except Exception:
-        df['Passed Percentage'] = (df['Passed Checks'] / df['Total Checks']) * 100
+    # Apply the function to calculate 'Passed Percentage'
+    df['Passed Percentage'] = df.apply(_calc_passed_percentage, axis=1)
 
     # Add summary row
     summary_row = {
@@ -53,14 +60,21 @@ def create_specifications_dataframe(data: dict):
     df = df.append(summary_row, ignore_index=True)
 
     # Define a function to apply colors
-    def color_pass_fail(val):
-        if isinstance(val, (float, int)):  # apply only to numeric columns
-            if val < 50:  # assuming a fail if less than 50% pass
+    def color_pass_fail(val: str | None) -> str:
+        if pd.isnull(val):  # check for NaN or None
+            return 'background-color: gray'
+
+        else:  # apply only to numeric columns
+            val = float(val)
+            if val < 30:  # assuming a fail if less than 50% pass
                 return 'background-color: red'
-            elif val < 80:  # assuming a fail if less than 50% pass
+            if val < 50:  # assuming a fail if less than 50% pass
+                return 'background-color: orange'
+            elif val < 70:  # assuming a fail if less than 50% pass
                 return 'background-color: yellow'
-            else:
+            elif val >= 70:
                 return 'background-color: green'
+
         return ''  # return empty string for other types
 
     # Apply color styling to the DataFrame
