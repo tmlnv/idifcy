@@ -1,0 +1,4 @@
+line-length = 120
+
+# Assume Python 3.11
+target-version = "py311"

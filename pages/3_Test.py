@@ -22,7 +22,7 @@ def initialize_session_state():
 
 
 def upload_ids_file():
-    ids_file = st.file_uploader("Выберите файл IDS", type=['ids'], key="uploaded_file")
+    ids_file = st.file_uploader("Выберите файл IDS", type=["ids"], key="uploaded_file")
     if ids_file:
         my_ids = ids.open(ids_file)
         session["IdsFile"] = my_ids
@@ -34,7 +34,6 @@ def print_ids_as_dict():
 
 
 def run_ids_test():
-
     ids_info = session["IdsFile"].info
 
     try:
@@ -47,9 +46,7 @@ def run_ids_test():
     is_finished = False
 
     while not is_finished:
-
-        with st.spinner('Выполняется проверка качества'):
-
+        with st.spinner("Выполняется проверка качества"):
             session["IdsFile"].validate(session["ifc_file"])
 
             report = reporter.Json(session["IdsFile"]).report()
@@ -84,9 +81,9 @@ def execute():
 
             if session["IdsFile"]:
                 if st.button(
-                        'Провести проверку качества',
-                        key="run_ids_test",
-                        help='Провести тест в соответствии с IDS спецификацией'
+                    "Провести проверку качества",
+                    key="run_ids_test",
+                    help="Провести тест в соответствии с IDS спецификацией",
                 ):
                     run_ids_test()
                 if session.get("IdsReportDF"):
@@ -105,9 +102,9 @@ def execute():
             if ids_report := session.get("IdsReport"):
                 st.header("Результаты проверки")
                 st.download_button(
-                    'Download JSON',
-                    file_name='IDS_RES_' + session.file_name.replace('ifc', '.json'),
-                    data=json.dumps(ids_report)
+                    "Download JSON",
+                    file_name="IDS_RES_" + session.file_name.replace("ifc", ".json"),
+                    data=json.dumps(ids_report),
                 )
                 st.write(ids_report)
             else:

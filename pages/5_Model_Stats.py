@@ -20,7 +20,7 @@ def load_data():
     if "ifc_file" in session:
         session.Graphs = {
             "objects_graph": graph_maker.get_elements_graph(session.ifc_file),
-            "high_frquency_graph": graph_maker.get_high_frequency_entities_graph(session.ifc_file)
+            "high_frquency_graph": graph_maker.get_high_frequency_entities_graph(session.ifc_file),
         }
         load_cost_schedules()
         load_work_schedules()
@@ -31,10 +31,9 @@ def load_work_schedules():
     session.SequenceData = {
         "schedules": session.ifc_file.by_type("IfcWorkSchedule"),
         "tasks": session.ifc_file.by_type("IfcTask"),
-        "ScheduleData": [{
-            "Id": schedule.id(),
-            "Data": ifchelper.get_schedule_tasks(schedule)
-        } for schedule in session.ifc_file.by_type("IfcWorkSchedule")
+        "ScheduleData": [
+            {"Id": schedule.id(), "Data": ifchelper.get_schedule_tasks(schedule)}
+            for schedule in session.ifc_file.by_type("IfcWorkSchedule")
         ],
     }
 
@@ -42,7 +41,7 @@ def load_work_schedules():
 def load_cost_schedules():
     session["CostData"] = {
         "schedules": session.ifc_file.by_type("IfcCostSchedule"),
-        "cost_items": session.ifc_file.by_type("IfcCostItem")
+        "cost_items": session.ifc_file.by_type("IfcCostItem"),
     }
 
 
@@ -70,18 +69,17 @@ def draw_schedules():
     col1, col2 = st.columns(2)
     with col1:
         number_of_schedules = len(session.SequenceData["schedules"])
-        st.subheader(
-            f'Work Schedules: {number_of_schedules}'
-        )
-        schedules = [f'{work_schedule.Name} / {work_schedule.id()}' for work_schedule in
-                     session.SequenceData["schedules"] or []]
+        st.subheader(f"Work Schedules: {number_of_schedules}")
+        schedules = [
+            f"{work_schedule.Name} / {work_schedule.id()}" for work_schedule in session.SequenceData["schedules"] or []
+        ]
         st.selectbox("Schedules", schedules, key="schedule_selector")
         schedule_id = int(session.schedule_selector.split("/", 1)[1]) if session.schedule_selector else None
         schedule = session.ifc_file.by_id(schedule_id) if schedule_id else None
         if schedule:
             tasks = ifchelper.get_schedule_tasks(schedule) if schedule else None
             if tasks:
-                st.info(f'Number of Tasks : {len(tasks)}')
+                st.info(f"Number of Tasks : {len(tasks)}")
                 task_data = ifchelper.get_task_data(tasks)
                 st.table(task_data)
             else:
@@ -91,11 +89,11 @@ def draw_schedules():
 
     with col2:
         number_of_schedules = len(session.CostData["schedules"])
-        st.subheader(
-            f'Cost Schedules: {number_of_schedules}'
+        st.subheader(f"Cost Schedules: {number_of_schedules}")
+        st.selectbox(
+            "Cost Schedules",
+            [f"{cost_schedule.Name} ({cost_schedule.id()})" for cost_schedule in session.CostData["schedules"] or []],
         )
-        st.selectbox("Cost Schedules", [f'{cost_schedule.Name} ({cost_schedule.id()})' for cost_schedule in
-                                        session.CostData["schedules"] or []])
         if not session.ifc_file.by_type("IfcCostItem"):
             st.warning("No Cost Items 😥")
 
@@ -163,10 +161,10 @@ def get_object_data(fromId=None):
 
         for key in dir(element):
             if (
-                    not key[0].isalpha()
-                    or key[0] != key[0].upper()
-                    or key in element.get_info()
-                    or not getattr(element, key)
+                not key[0].isalpha()
+                or key[0] != key[0].upper()
+                or key in element.get_info()
+                or not getattr(element, key)
             ):
                 continue
             add_attribute(debug_props["inverse_attributes"], key, getattr(element, key))
@@ -207,8 +205,12 @@ def execute():
             row1_col1, row1_col2 = st.columns([1, 5])
             with row1_col1:
                 st.text_input("Object ID", key="object_id")
-                st.button("Inspect from Object Id", key="get_object_button", on_click=get_object_data,
-                          args=(session.object_id,))
+                st.button(
+                    "Inspect from Object Id",
+                    key="get_object_button",
+                    on_click=get_object_data,
+                    args=(session.object_id,),
+                )
             if "BIMDebugProperties" in session and session.BIMDebugProperties:
                 props = session.BIMDebugProperties
                 ## DIRECT ATTRIBUTES
@@ -220,8 +222,12 @@ def execute():
                             col2.text(f'🔗 {prop["name"]}')
                             col2.info(prop["string_value"])
                             col3.text("🔗")
-                            col3.button("Get Object", key=f'get_object_pop_button_{prop["int_value"]}',
-                                        on_click=get_object_data, args=(prop["int_value"],))
+                            col3.button(
+                                "Get Object",
+                                key=f'get_object_pop_button_{prop["int_value"]}',
+                                on_click=get_object_data,
+                                args=(prop["int_value"],),
+                            )
                         else:
                             col2.text_input(label=prop["name"], key=prop["name"], value=prop["string_value"])
 
@@ -233,8 +239,12 @@ def execute():
                         col1.text(inverse["name"])
                         col2.text(inverse["string_value"])
                         if inverse["int_value"]:
-                            col3.button("Get Object", key=f'get_object_pop_button_{inverse["int_value"]}',
-                                        on_click=get_object_data, args=(inverse["int_value"],))
+                            col3.button(
+                                "Get Object",
+                                key=f'get_object_pop_button_{inverse["int_value"]}',
+                                on_click=get_object_data,
+                                args=(inverse["int_value"],),
+                            )
 
                 ## INVERSE REFERENCES
                 if props["inverse_references"]:
@@ -243,8 +253,12 @@ def execute():
                         col1, col3 = st.columns([3, 3])
                         col1.text(inverse["string_value"])
                         if inverse["int_value"]:
-                            col3.button("Get Object", key=f'get_object_pop_button_inverse_{inverse["int_value"]}',
-                                        on_click=get_object_data, args=(inverse["int_value"],))
+                            col3.button(
+                                "Get Object",
+                                key=f'get_object_pop_button_inverse_{inverse["int_value"]}',
+                                on_click=get_object_data,
+                                args=(inverse["int_value"],),
+                            )
 
     else:
         st.header(MSG_UPLOAD_FILE_REQ)
