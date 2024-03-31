@@ -59,7 +59,7 @@ def run_ids_test():
 
 def execute():
     st.set_page_config(
-        page_title="Test",
+        page_title="IFC Model AQA",
         page_icon="🧊",
         layout="wide",
         initial_sidebar_state="expanded",

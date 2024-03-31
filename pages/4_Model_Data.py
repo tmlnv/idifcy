@@ -25,7 +25,8 @@ def download_csv():
 
 def execute():
     st.set_page_config(
-        page_title="Quantities",
+        page_title="IFC Model Quantities",
+        page_icon="🔩",
         layout="wide",
         initial_sidebar_state="expanded",
     )

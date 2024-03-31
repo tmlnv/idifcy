@@ -221,6 +221,7 @@ def write_health_data():
 def execute():
     st.set_page_config(
         page_title="🔍 IFC.js Viewer",
+        page_icon="🔍",
         layout="wide",
         initial_sidebar_state="expanded",
     )

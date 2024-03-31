@@ -186,6 +186,12 @@ def edit_object_data(object_id, attribute):
 
 def execute():
     initialise_debug_props()
+    st.set_page_config(
+        page_title="IFC Model Stats",
+        page_icon="📈",
+        layout="wide",
+        initial_sidebar_state="expanded",
+    )
     st.header("Статистика модели")
 
     if "isHealthDataLoaded" not in session:
