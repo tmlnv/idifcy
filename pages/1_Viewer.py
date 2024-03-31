@@ -221,13 +221,12 @@ def write_health_data():
 def execute():
     st.set_page_config(
         page_title="🔍 IFC.js Viewer",
+        page_icon="🔍",
         layout="wide",
         initial_sidebar_state="expanded",
     )
-    # st.header("🔍 IFC.js Viewer")
     st.header("Просмотр модели")
     initialise_debug_props()
-    # st.header("🔍 IFC.js Viewer")
     if "ifc_file" in session and session["ifc_file"]:
         if "ifc_js_response" not in session:
             session["ifc_js_response"] = ""
