@@ -2,7 +2,6 @@ import pandas as pd
 import streamlit as st
 import datetime
 from ifctester import ids
-from PIL import Image
 from streamlit.runtime.uploaded_file_manager import UploadedFile
 
 from pages.components.custom_sidebar import custom_sidebar
@@ -351,10 +350,9 @@ def main(uploaded_file: UploadedFile) -> None:
 
 
 def execute():
-    im = Image.open("./resources/img/IDS_logo.ico")
     st.set_page_config(
         page_title="IDS Converter",
-        page_icon=im,
+        page_icon="📖",
         layout="wide",
         initial_sidebar_state="expanded",
     )
