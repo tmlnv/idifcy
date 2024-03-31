@@ -52,11 +52,11 @@ def main():
 
     ## Add File uploader to Side Bar Navigation
     # st.header('Model Loader')
-    st.file_uploader("Выберите файл", type=['ifc'], key="uploaded_file", on_change=callback_upload)
+    st.file_uploader("Выберите файл", type=["ifc"], key="uploaded_file", on_change=callback_upload)
 
     ## Add File Name and Success Message
     if "is_file_loaded" in session and session["is_file_loaded"]:
-        st.success(f'Файл успешно загружен')
+        st.success(f"Файл успешно загружен")
 
         col1, col2 = st.columns([2, 1])
         col1.subheader(f'Файл проекта успешно загружен "{get_project_name()}"')

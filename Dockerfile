@@ -16,8 +16,17 @@ COPY . /home/pn/app
 # Change ownership of the copied files to the 'pn' user
 RUN chown -R pn:pn /home/pn/app
 
-# Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+# Install Poetry
+RUN curl -sSL https://install.python-poetry.org | python3 -
+
+# Ensure Poetry and Python binaries are in PATH
+ENV PATH="/root/.local/bin:$PATH"
+
+# Disable virtualenv creation from poetry to use the system python
+ENV POETRY_VIRTUALENVS_CREATE=false
+
+# Install dependencies
+RUN poetry install --no-interaction --no-ansi
 
 # Install JavaScript dependencies
 # Ensure you run npm install as 'pn' user to avoid permission issues
