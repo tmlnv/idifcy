@@ -19,9 +19,9 @@ def create_specifications_dataframe(data: dict):
             row = {
                 'Specification Name': spec['name'],
                 'Requirement': req['description'],
-                'Total Checks': spec['total_checks'],
-                'Passed Checks': spec['total_checks_pass'],
-                'Failed Checks': spec['total_checks'] - spec['total_checks_pass']
+                'Total Checks': req['total_applicable'],
+                'Passed Checks': req['total_pass'],
+                'Failed Checks': req['total_fail']
             }
             rows.append(row)
 
