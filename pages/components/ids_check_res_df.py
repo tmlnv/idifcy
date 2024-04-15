@@ -1,5 +1,6 @@
 """Модуль для обработки кузультатов IDS проверки"""
 import pandas as pd
+from loguru import logger
 
 
 def create_specifications_dataframe(data: dict):
@@ -12,23 +13,27 @@ def create_specifications_dataframe(data: dict):
 
     # Iterate through specifications
     for spec in data['specifications']:
-        # Aggregate total and passed checks
-        total_checks += spec['total_checks']
-        passed_checks += spec['total_checks_pass']
-
-        # Calculate failed checks
-        failed_checks += spec['total_checks'] - spec['total_checks_pass']
 
         # For each requirement, we only need the description
         for req in spec['requirements']:
             row = {
                 'Specification Name': spec['name'],
                 'Requirement': req['description'],
-                'Total Checks': spec['total_checks'],
-                'Passed Checks': spec['total_checks_pass'],
-                'Failed Checks': spec['total_checks'] - spec['total_checks_pass']
+                'Total Checks': req['total_applicable'],
+                'Passed Checks': req['total_pass'],
+                'Failed Checks': req['total_fail']
             }
             rows.append(row)
+
+            # Aggregate total and passed checks
+            total_checks += spec['total_checks']
+            passed_checks += spec['total_checks_pass']
+
+            # Calculate failed checks
+            failed_checks += spec['total_checks'] - spec['total_checks_pass']
+
+            logger.info(f"Spec total checks per requirement {spec['total_checks']}")
+            logger.info(f"Total checks {total_checks}")
 
     # Create DataFrame
     df = pd.DataFrame(rows)
@@ -42,7 +47,7 @@ def create_specifications_dataframe(data: dict):
             # Calculate the percentage
             percentage = (row_['Passed Checks'] / row_['Total Checks']) * 100
             # Return the percentage with three decimal places
-            return f"{percentage:.3f}"
+            return f"{percentage:.2f}"
 
     # Apply the function to calculate 'Passed Percentage'
     df['Passed Percentage'] = df.apply(_calc_passed_percentage, axis=1)
@@ -54,7 +59,7 @@ def create_specifications_dataframe(data: dict):
         'Total Checks': total_checks,
         'Passed Checks': passed_checks,
         'Failed Checks': failed_checks,
-        'Passed Percentage': round((passed_checks / total_checks * 100)) if total_checks > 0 else 0
+        'Passed Percentage': f"{(passed_checks / total_checks * 100):.2f}" if total_checks > 0 else '0.00'
     }
 
     df = df.append(summary_row, ignore_index=True)
