@@ -1,5 +1,6 @@
 """Модуль для обработки кузультатов IDS проверки"""
 import pandas as pd
+from loguru import logger
 
 
 def create_specifications_dataframe(data: dict):
@@ -12,12 +13,6 @@ def create_specifications_dataframe(data: dict):
 
     # Iterate through specifications
     for spec in data['specifications']:
-        # Aggregate total and passed checks
-        total_checks += spec['total_checks']
-        passed_checks += spec['total_checks_pass']
-
-        # Calculate failed checks
-        failed_checks += spec['total_checks'] - spec['total_checks_pass']
 
         # For each requirement, we only need the description
         for req in spec['requirements']:
@@ -29,6 +24,16 @@ def create_specifications_dataframe(data: dict):
                 'Failed Checks': spec['total_checks'] - spec['total_checks_pass']
             }
             rows.append(row)
+
+            # Aggregate total and passed checks
+            total_checks += spec['total_checks']
+            passed_checks += spec['total_checks_pass']
+
+            # Calculate failed checks
+            failed_checks += spec['total_checks'] - spec['total_checks_pass']
+
+            logger.info(f"Spec total checks per requirement {spec['total_checks']}")
+            logger.info(f"Total checks {total_checks}")
 
     # Create DataFrame
     df = pd.DataFrame(rows)
