@@ -47,7 +47,7 @@ def create_specifications_dataframe(data: dict):
             # Calculate the percentage
             percentage = (row_['Passed Checks'] / row_['Total Checks']) * 100
             # Return the percentage with three decimal places
-            return f"{percentage:.3f}"
+            return f"{percentage:.2f}"
 
     # Apply the function to calculate 'Passed Percentage'
     df['Passed Percentage'] = df.apply(_calc_passed_percentage, axis=1)
@@ -59,7 +59,7 @@ def create_specifications_dataframe(data: dict):
         'Total Checks': total_checks,
         'Passed Checks': passed_checks,
         'Failed Checks': failed_checks,
-        'Passed Percentage': round((passed_checks / total_checks * 100)) if total_checks > 0 else 0
+        'Passed Percentage': f"{(passed_checks / total_checks * 100):.2f}" if total_checks > 0 else '0.00'
     }
 
     df = df.append(summary_row, ignore_index=True)
