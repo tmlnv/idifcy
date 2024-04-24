@@ -26,11 +26,11 @@ def create_specifications_dataframe(data: dict):
             rows.append(row)
 
             # Aggregate total and passed checks
-            total_checks += spec['total_checks']
-            passed_checks += spec['total_checks_pass']
+            total_checks += req['total_applicable']
+            passed_checks += req['total_pass']
 
             # Calculate failed checks
-            failed_checks += spec['total_checks'] - spec['total_checks_pass']
+            failed_checks += req['total_fail']
 
             logger.info(f"Spec total checks per requirement {spec['total_checks']}")
             logger.info(f"Total checks {total_checks}")
