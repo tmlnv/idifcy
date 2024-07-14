@@ -17,13 +17,11 @@ cd pages/frontend-viewer/
 npm i
 ```
 
-
 ## Run
 
 ```bash
 streamlit run Homepage.py
 ```
-
 
 ## Docker
 
@@ -33,5 +31,5 @@ docker build -t idifcy .
 
 # Run Docker container
 docker run -p 8501:8501 idifcy
-
 ```
+
