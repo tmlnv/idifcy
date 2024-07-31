@@ -32,7 +32,6 @@ RUN apt-get update && apt-get install -y gcc libpython3-dev
 RUN poetry install --no-interaction --no-ansi -vv --no-root
 
 # Install JavaScript dependencies
-# Ensure you run npm install as 'pn' user to avoid permission issues
 RUN npm install --prefix pages/frontend-viewer/
 
 # Make port 8501 available to the world outside this container

@@ -219,7 +219,7 @@ def execute():
         layout="wide",
         initial_sidebar_state="expanded",
     )
-    st.header("Model viewer")
+    st.header("Model view")
     initialise_debug_props()
     if "ifc_file" in session and session["ifc_file"]:
         if "ifc_js_response" not in session:

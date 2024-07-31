@@ -55,3 +55,10 @@ You can pull the latest image directly from DockerHub:
 ```commandline
 docker pull tmlnv/idifcy:latest
 ```
+
+## References
+
+1. [_Ifc 101 course_](https://github.com/myoualid/ifc-101-course)
+2. [_ifcopenshell_](https://github.com/IfcOpenShell/IfcOpenShell)
+3. [_IDS_](https://github.com/buildingSMART/IDS)
+4. [_ids converter_](https://github.com/c4rlosdias/ids_converter)
