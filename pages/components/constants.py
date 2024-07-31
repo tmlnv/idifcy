@@ -1,2 +1,3 @@
-"""Константы для исполльзования в страницах приложения"""
-MSG_UPLOAD_FILE_REQ = "Загрузите файл на странице Home Page"
+"""Constants for the app"""
+
+MSG_UPLOAD_FILE_REQ = "Upload .ifc file on the Home page"
