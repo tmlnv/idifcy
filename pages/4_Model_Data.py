@@ -15,10 +15,6 @@ def initialize_session_state():
     session["IsDataFrameLoaded"] = False
 
 
-def download_csv():
-    pandashelper.download_csv(session.file_name, session.DataFrame)
-
-
 def execute():
     st.set_page_config(
         page_title="IFC Model Quantities",
