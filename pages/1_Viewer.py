@@ -1,5 +1,6 @@
 import streamlit as st
 
+from pages.components.constants import MSG_UPLOAD_FILE_REQ
 from pages.components.custom_sidebar import custom_sidebar
 from tools import ifchelper
 import json
@@ -230,7 +231,7 @@ def execute():
         with tab2:
             write_health_data()
     else:
-        st.header("Upload an ifc file on the homepage")
+        st.header(MSG_UPLOAD_FILE_REQ)
 
     custom_sidebar()
 

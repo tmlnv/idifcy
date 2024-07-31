@@ -22,7 +22,7 @@ def execute():
         layout="wide",
         initial_sidebar_state="expanded",
     )
-    st.header("Данные модели")
+    st.header("Model data")
     if "IsDataFrameLoaded" not in session:
         initialize_session_state()
     if not session.IsDataFrameLoaded:
