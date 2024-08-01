@@ -5,6 +5,8 @@ is a robust tool designed to streamline the validation and visualization of IFC 
 using innovative IDS technology. It enhances the quality assurance processes
 in construction projects through IDS validation and verification.
 
+![demo screenshot](https://drive.google.com/uc?export=view&id=125ZCo3L1ZGZMRo7HebLNp7jCCrz6sosb)
+
 ## Setup
 
 ### Python part
