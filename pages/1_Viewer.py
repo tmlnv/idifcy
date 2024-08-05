@@ -1,5 +1,6 @@
 import streamlit as st
 
+from pages.components.constants import MSG_UPLOAD_FILE_REQ
 from pages.components.custom_sidebar import custom_sidebar
 from tools import ifchelper
 import json
@@ -55,7 +56,7 @@ def format_ifc_js_psets(data):
 
 
 def initialise_debug_props(force=False):
-    if not "BIMDebugProperties" in session:
+    if "BIMDebugProperties" not in session:
         session.BIMDebugProperties = {
             "step_id": 0,
             "number_of_polygons": 0,
@@ -137,11 +138,6 @@ def get_object_data(fromId=None):
             print(debug_props["attributes"])
 
 
-def edit_object_data(object_id, attribute):
-    entity = session.ifc_file.by_id(object_id)
-    print(getattr(entity, attribute))
-
-
 def write_pset_data():
     data = get_psets_from_ifc_js()
     if data:
@@ -157,7 +153,7 @@ def write_health_data():
     ## REPLICATE IFC DEBUG PANNEL
     row1_col1, row1_col2 = st.columns([1, 1])
     with row1_col1:
-        st.number_input("Object ID", value=0, placeholder="Введите id элемента...", key="object_id")
+        st.number_input("Object ID", value=0, placeholder="Input object ID...", key="object_id")
     with row1_col2:
         st.button(
             "Inspect From Id", key="edit_object_button", on_click=get_object_data, args=(st.session_state.object_id,)
@@ -172,7 +168,6 @@ def write_health_data():
         props = session.BIMDebugProperties
         if props["attributes"]:
             st.subheader("Attributes")
-            # st.table(props["attributes"])
             for prop in props["attributes"]:
                 col2, col3 = st.columns([3, 3])
                 if prop["int_value"]:
@@ -187,7 +182,6 @@ def write_health_data():
                     )
                 else:
                     col2.text_input(label=prop["name"], key=prop["name"], value=prop["string_value"])
-                    # col3.button("Edit Object", key=f'edit_object_{prop["name"]}', on_click=edit_object_data, args=(props["active_step_id"],prop["name"]))
 
         if props["inverse_attributes"]:
             st.subheader("Inverse Attributes")
@@ -225,19 +219,19 @@ def execute():
         layout="wide",
         initial_sidebar_state="expanded",
     )
-    st.header("Просмотр модели")
+    st.header("Model view")
     initialise_debug_props()
     if "ifc_file" in session and session["ifc_file"]:
         if "ifc_js_response" not in session:
             session["ifc_js_response"] = ""
         draw_3d_viewer()
-        tab1, tab2 = st.tabs(["Модель и параметры", "Debugger"])
+        tab1, tab2 = st.tabs(["Model and parameters", "Debugger"])
         with tab1:
             write_pset_data()
         with tab2:
             write_health_data()
     else:
-        st.header("Загрузите файл на домашней странице")
+        st.header(MSG_UPLOAD_FILE_REQ)
 
     custom_sidebar()
 

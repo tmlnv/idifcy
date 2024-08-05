@@ -46,24 +46,21 @@ def main():
     st.title("IFC BIM Model AQA")
     st.markdown(
         """ 
-        ###  📁 Загрузите файл в формате ifc
+        ###  📁 Upload IFC file
         """
     )
 
-    ## Add File uploader to Side Bar Navigation
-    # st.header('Model Loader')
-    st.file_uploader("Выберите файл", type=["ifc"], key="uploaded_file", on_change=callback_upload)
+    st.file_uploader("Upload file", type=["ifc"], key="uploaded_file", on_change=callback_upload)
 
-    ## Add File Name and Success Message
     if "is_file_loaded" in session and session["is_file_loaded"]:
-        st.success(f"Файл успешно загружен")
+        st.success("File successfully uploaded")
 
         col1, col2 = st.columns([2, 1])
-        col1.subheader(f'Файл проекта успешно загружен "{get_project_name()}"')
-        col2.text_input("✏️ Изменить название проекта", key="project_name_input")
-        col2.button("✔️ Применить", key="change_project_name", on_click=change_project_name())
+        col1.subheader(f'Project "{get_project_name()}" is successfully uploaded')
+        col2.text_input("Change project name", key="project_name_input")
+        col2.button("✔️ Apply", key="change_project_name", on_click=change_project_name())
 
-        st.write("🔃 Вы так же можете загрузить новый файл")
+        st.write("🔃 You can also upload another file")
 
     custom_sidebar()
 

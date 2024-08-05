@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "idifcy"
-version = "0.1.0"
+version = "0.1.1"
 description = "IFC quality assurance using IDS."
 authors = ["tmlnv <tmlnv@protonmail.com>"]
 license = "GPL-3.0-only"
@@ -23,6 +23,7 @@ loguru = "^0.7.2"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.3.2"
+neovim = "^0.3.1"
 
 [build-system]
 requires = ["poetry-core"]

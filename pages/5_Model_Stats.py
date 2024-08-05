@@ -99,7 +99,7 @@ def draw_schedules():
 
 
 def initialise_debug_props(force=False):
-    if not "BIMDebugProperties" in session:
+    if "BIMDebugProperties" not in session:
         session.BIMDebugProperties = {
             "step_id": 0,
             "number_of_polygons": 0,
@@ -179,11 +179,6 @@ def get_object_data(fromId=None):
         print(debug_props["attributes"])
 
 
-def edit_object_data(object_id, attribute):
-    entity = session.ifc_file.by_id(object_id)
-    print(getattr(entity, attribute))
-
-
 def execute():
     initialise_debug_props()
     st.set_page_config(
@@ -192,7 +187,7 @@ def execute():
         layout="wide",
         initial_sidebar_state="expanded",
     )
-    st.header("Статистика модели")
+    st.header("IFC Model Stats")
 
     if "isHealthDataLoaded" not in session:
         initialize_session_state()

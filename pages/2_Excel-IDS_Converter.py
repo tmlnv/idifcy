@@ -117,9 +117,7 @@ def main(uploaded_file: UploadedFile) -> None:
 
                 st.divider()
 
-                #
                 # Convert dataframe to ids
-                #
                 submitted = st.button("Convert to IDS ▶️")
                 if submitted:
                     my_ids = ids.Ids(
@@ -151,7 +149,6 @@ def main(uploaded_file: UploadedFile) -> None:
                         # create applicability
                         for index, row in df_app_spec.iterrows():
                             # add entity
-
                             entity = (
                                 ids.Entity(
                                     name=pattern(row["entity name"]), predefinedType=pattern(row["predefined type"])
@@ -161,7 +158,6 @@ def main(uploaded_file: UploadedFile) -> None:
                             )
 
                             # add attribute
-
                             attribute = (
                                 ids.Attribute(
                                     name=pattern(row["attribute name"]), value=pattern(row["attribute value"])
@@ -171,7 +167,6 @@ def main(uploaded_file: UploadedFile) -> None:
                             )
 
                             # add property
-
                             property = (
                                 ids.Property(
                                     uri=row["URI"] if row["URI"] != "" else None,
@@ -185,7 +180,6 @@ def main(uploaded_file: UploadedFile) -> None:
                             )
 
                             # add classification
-
                             classification = (
                                 ids.Classification(
                                     uri=row["URI"] if row["URI"] != "" else None,
@@ -197,7 +191,6 @@ def main(uploaded_file: UploadedFile) -> None:
                             )
 
                             # add material
-
                             material = (
                                 ids.Material(
                                     uri=row["URI"] if row["URI"] != "" else None, value=pattern(row["material name"])
@@ -207,7 +200,6 @@ def main(uploaded_file: UploadedFile) -> None:
                             )
 
                             # add parts
-
                             parts = (
                                 ids.PartOf(
                                     entity=row["part of entity"].upper(),
@@ -233,8 +225,8 @@ def main(uploaded_file: UploadedFile) -> None:
                         # create requirements
                         for index, row in df_req_spec.iterrows():
                             row["optionality"] = "REQUIRED" if row["optionality"] == "" else row["optionality"]
-                            # add entity
 
+                            # add entity
                             entity = (
                                 ids.Entity(
                                     name=pattern(row["entity name"]),
@@ -245,7 +237,6 @@ def main(uploaded_file: UploadedFile) -> None:
                             )
 
                             # add attribute
-
                             attribute = (
                                 ids.Attribute(
                                     name=pattern(row["attribute name"]), value=pattern(row["attribute value"])
@@ -255,7 +246,6 @@ def main(uploaded_file: UploadedFile) -> None:
                             )
 
                             # add property
-
                             property = (
                                 ids.Property(
                                     uri=row["URI"] if row["URI"] != "" else None,
@@ -273,7 +263,6 @@ def main(uploaded_file: UploadedFile) -> None:
                             )
 
                             # add classification
-
                             classification = (
                                 ids.Classification(
                                     uri=row["URI"] if row["URI"] != "" else None,
@@ -289,7 +278,6 @@ def main(uploaded_file: UploadedFile) -> None:
                             )
 
                             # add material
-
                             material = (
                                 ids.Material(
                                     uri=row["URI"] if row["URI"] != "" else None,
@@ -304,7 +292,6 @@ def main(uploaded_file: UploadedFile) -> None:
                             )
 
                             # add parts
-
                             parts = (
                                 ids.PartOf(
                                     entity=row["part of entity"].upper(),
@@ -356,7 +343,7 @@ def execute():
         layout="wide",
         initial_sidebar_state="expanded",
     )
-    st.header("Конвертация Excel файла в IDS формат")
+    st.header("Convert Excel to IDS")
 
     if "ids" not in st.session_state:
         st.session_state.ids = None
@@ -377,7 +364,7 @@ def execute():
     if "convert" not in st.session_state:
         st.session_state.convert = False
 
-    uploaded_file: UploadedFile = st.file_uploader("Выберите XLSX файл", type=["xlsx"])
+    uploaded_file: UploadedFile = st.file_uploader("Upload XLSX file", type=["xlsx"])
 
     main(uploaded_file)
 

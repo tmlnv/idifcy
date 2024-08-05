@@ -22,7 +22,7 @@ def initialize_session_state():
 
 
 def upload_ids_file():
-    ids_file = st.file_uploader("Выберите файл IDS", type=["ids"], key="uploaded_file")
+    ids_file = st.file_uploader("Choose an IDS file", type=["ids"], key="uploaded_file")
     if ids_file:
         my_ids = ids.open(ids_file)
         session["IdsFile"] = my_ids
@@ -41,12 +41,12 @@ def run_ids_test():
     except KeyError:
         ids_author = "Неизвестный автор"
 
-    st.write(f'Название ids спецификации: **{ids_info["title"]}**, автор: {ids_author}')
+    st.write(f'Ids specification: **{ids_info["title"]}**, author: {ids_author}')
 
     is_finished = False
 
     while not is_finished:
-        with st.spinner("Выполняется проверка качества"):
+        with st.spinner("Quality control in progress"):
             session["IdsFile"].validate(session["ifc_file"])
 
             report = reporter.Json(session["IdsFile"]).report()
@@ -64,7 +64,7 @@ def execute():
         layout="wide",
         initial_sidebar_state="expanded",
     )
-    st.header("Тестирование файла")
+    st.header("File testing")
 
     if "IsDataFrameLoaded" not in session:
         initialize_session_state()
@@ -81,13 +81,13 @@ def execute():
 
             if session["IdsFile"]:
                 if st.button(
-                    "Провести проверку качества",
+                    "Conduct quality check",
                     key="run_ids_test",
-                    help="Провести тест в соответствии с IDS спецификацией",
+                    help="Conduct the test according to the IDS specification",
                 ):
                     run_ids_test()
                 if session.get("IdsReportDF"):
-                    st.header("Результаты проверки")
+                    st.header("Test results")
                     st.write(session["IdsReportDF"])
 
         with tab2:
@@ -95,20 +95,20 @@ def execute():
             if session["IdsFile"]:
                 print_ids_as_dict()
             else:
-                st.write("Загрузите IDS файл на вкладке 'Test' для просмотра спецификации")
+                st.write("Upload IDS file on the 'Test' tab to view the specification")
 
         with tab3:
             st.header("IDS Results")
             if ids_report := session.get("IdsReport"):
-                st.header("Результаты проверки")
+                st.header("Test results")
                 st.download_button(
                     "Download JSON",
                     file_name="IDS_RES_" + session.file_name.replace("ifc", ".json"),
                     data=json.dumps(ids_report),
                 )
-                st.write(ids_report)
+                st.write(ids_reports)
             else:
-                st.write("Загрузите IDS файл на вкладке 'Test' и произведите проверку, нажав на кнопку 'Run IDS tests'")
+                st.write("Upload IDS file on the 'Tests' tab and conduct test by pressing 'Run IDS tests' button")
 
     else:
         st.header(MSG_UPLOAD_FILE_REQ)
