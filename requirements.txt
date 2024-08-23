@@ -6,3 +6,4 @@ plotly==5.13.1
 pandas~=1.5.3
 ifctester~=0.0.231005
 loguru~=0.7.2
+openpyxl==3.1.5
