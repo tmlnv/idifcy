@@ -16,7 +16,6 @@ plotly = "5.13.1"
 pandas = ">=1.5.3,<1.6.0"
 xlsxwriter = "3.0.9"
 xmlschema = "2.5.0"
-numpy = ">=1.24.2,<1.25.0"
 openpyxl = "3.1.2"
 loguru = "^0.7.2"
 
