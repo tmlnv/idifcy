@@ -1,9 +1,9 @@
 # idifcy
 
 Intelligent Design Implementation for Facilitating Construction Yields (idifcy)
-is a robust tool designed to streamline the validation and visualization of IFC files
-using innovative IDS technology. It enhances the quality assurance processes
-in construction projects through IDS validation and verification.
+is a tool designed to help Civil Engineers manage IFC files.
+It enhances the quality assurance processes in construction projects
+through IDS validation and verification and IFC model visualization.
 
 ![demo screenshot](https://drive.google.com/uc?export=view&id=125ZCo3L1ZGZMRo7HebLNp7jCCrz6sosb)
 
