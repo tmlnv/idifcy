@@ -48,11 +48,9 @@ docker run -p 8501:8501 idifcy
 
 ### DockerHub
 
-Due to a dependency on a specific version of `ifcopenshell`
-that is not available on PyPI,
-the current working build of idifcy is only available through DockerHub.
-
-You can pull the latest image directly from DockerHub:
+Note: The current version of idifcy relies on a specific version of ifcopenshellthat
+that is not available on PyPI. Therefore, to use idifcy,
+you must pull the working build from DockerHub.
 
 ```commandline
 docker pull tmlnv/idifcy:latest
