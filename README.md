@@ -1,9 +1,9 @@
 # idifcy
 
 Intelligent Design Implementation for Facilitating Construction Yields (idifcy)
-is a robust tool designed to streamline the validation and visualization of IFC files
-using innovative IDS technology. It enhances the quality assurance processes
-in construction projects through IDS validation and verification.
+is a tool designed to help Civil Engineers manage IFC files.
+It enhances the quality assurance processes in construction projects
+through IDS validation and verification and IFC model visualization.
 
 ![demo screenshot](https://drive.google.com/uc?export=view&id=125ZCo3L1ZGZMRo7HebLNp7jCCrz6sosb)
 
@@ -48,11 +48,9 @@ docker run -p 8501:8501 idifcy
 
 ### DockerHub
 
-Due to a dependency on a specific version of `ifcopenshell`
-that is not available on PyPI,
-the current working build of idifcy is only available through DockerHub.
-
-You can pull the latest image directly from DockerHub:
+Note: The current version of idifcy relies on a specific version of ifcopenshellthat
+that is not available on PyPI. Therefore, to use idifcy,
+you must pull the working build from DockerHub.
 
 ```commandline
 docker pull tmlnv/idifcy:latest
